@@ -16,7 +16,7 @@ Please follow the instructions below.
 Clone the repo
 
 ```
-git clone https://github.com/GastonSaavedra/YourTalent.git
+git clone https://github.com/GastonSaavedra/Wp-Post-Pagination.git
 ```
 
 Install Dependencies
