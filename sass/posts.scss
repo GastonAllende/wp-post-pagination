@@ -1,0 +1,50 @@
+#wp-post-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 2%;
+  width: 96%;
+  list-style: none;
+  li {
+    height: 300px;
+    width: 31.3%;
+    background-size: cover !important;
+    background-position: 50% 50% !important;
+    margin: 1%;
+    div {
+      text-align: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(44, 62, 80);
+      opacity: 0;
+      transition: opacity 1s;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      h3 {
+        padding-top: 200px;
+        margin-bottom: 24px;
+        font-size: 18px;
+        color: white;
+        font-weight: bold;
+      }
+
+      a {
+        border-radius: 25px;
+        display: inline-block;
+        padding: 14px 28px 13px 28px;
+        line-height: 1;
+        border: 2px solid #fff;
+        font-weight: bold;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+      }
+    }
+  }
+}

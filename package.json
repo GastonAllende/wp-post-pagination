@@ -1,0 +1,29 @@
+{
+  "name": "wp-post-pagination",
+  "version": "1.0.0",
+  "description": "Get post from wordpress page with wp rest api",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel index.html",
+    "format": "prettier --write \"./app.js\"",
+    "lint": "eslint \"app.js\" --quiet",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GastonSaavedra/Wp-Post-Pagination.git"
+  },
+  "author": "Gaston Saavedra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GastonSaavedra/Wp-Post-Pagination/issues"
+  },
+  "homepage": "https://github.com/GastonSaavedra/Wp-Post-Pagination#readme",
+  "devDependencies": {
+    "eslint": "^6.7.2",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^1.19.1",
+    "sass": "^1.23.7"
+  }
+}

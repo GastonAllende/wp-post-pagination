@@ -1,0 +1,21 @@
+#wp-category-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 40px 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+
+  li {
+    margin-right: 16px;
+    font-family: Raleway, "Open Sans", "Helvetica Neue", Helvetica, Arial,
+      sans-serif;
+    font-weight: bold;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #777;
+    cursor: pointer;
+  }
+}
