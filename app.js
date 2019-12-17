@@ -109,6 +109,17 @@
     paginateElem.appendChild(fragment);
   }
 
+  /**
+  * scroll to top after a pagination number is clicked
+  */
+  function scrollToTop() {
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (c > 0) {
+      window.requestAnimationFrame(scrollToTop);
+      window.scrollTo(0, c - c / 8);
+    }
+  }
+
   // Click event for the categories 
   categoryElem.addEventListener("click", function (event) {
     if (event.target.tagName !== "LI") return;
@@ -128,7 +139,6 @@
   paginateElem.addEventListener("click", function (event) {
     if (event.target.tagName !== "LI") return;
     if (event.target.dataset.pagenr === page) return; // Prevent to make a request if is is the same page nr 
-    console.log(event.target.dataset.pagenr, page)
     page = event.target.dataset.pagenr;
     if (+catId === 0) {
       let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${pages}&page=${page}`;
@@ -137,10 +147,10 @@
       let postUrlCat = `${wpApiUrl}/${wpPostType}/?portfolio_category=${catId}&per_page=12&page=${page}`;
       getData(postUrlCat, createList, true);
     }
-    window.scroll(0, 0);
+    scrollToTop();
   });
 
-  // init page
+  // init
   getData(apiCategoryUrl, categoriesList);
   getData(apiUrl, createList, true);
 
