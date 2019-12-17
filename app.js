@@ -1,21 +1,27 @@
 (function () {
   //"use strict";
 
+  const wpApiUrl = 'http://www.velourfilm.se/wp/wp-json/wp/v2';
+
   const category = "portfolio_category";
   const wpPostType = "portfolio";
   const pages = 12;
   let catId = 0;
+  let page = 1;
 
-  const categoryElem = document.getElementById("wp-category-list");
-  const postElemt = document.getElementById("wp-post-list");
-  const paginateElemt = document.getElementById("wp-post-pagination");
+  const categoryElem = document.querySelector("#wp-category-list");
+  const postElem = document.querySelector("#wp-post-list");
+  const paginateElem = document.querySelector("#wp-post-pagination");
 
-  let apiCategoryUrl = `http://www.velourfilm.se/wp/wp-json/wp/v2/${category}`;
-  let apiUrl = `http://www.velourfilm.se/wp/wp-json/wp/v2/${wpPostType}/?per_page=${pages}&page=1`;
+  let apiCategoryUrl = `${wpApiUrl}/${category}`;
+  let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${pages}&page=1`;
 
-
+  /**
+   * create the list with posts
+   * @param {array} posts posts from wp api
+   */
   function createList(posts) {
-    postElemt.innerHTML = '';
+    postElem.innerHTML = '';
     var fragment = document.createDocumentFragment();
 
     posts.forEach(function (post) {
@@ -33,10 +39,13 @@
       fragment.appendChild(li);
     });
 
-    postElemt.appendChild(fragment);
+    postElem.appendChild(fragment);
   }
 
-
+  /**
+  * create the list with categories related to the porfolio post
+  * @param {array} categories categories from wp api
+  */
   function categoriesList(categories) {
 
     let fragment = document.createDocumentFragment();
@@ -52,11 +61,15 @@
       li.dataset.catid = category.id;
       fragment.appendChild(li);
     });
-
     categoryElem.appendChild(fragment);
   }
 
-
+  /**
+  * to fetch data from passed url 
+  * @param {string} url a url to fetch data from
+  * @param {object} cb callback function we can pass to manipulate the data
+  * @param {boolean} pag boolean if true then we generate the pagination list
+  */
   function getData(url, cb, pag = false) {
     fetch(url)
       .then(function (response) {
@@ -66,7 +79,7 @@
 
         // I we want to read the total pages and create pagination list
         if (pag) {
-          paginate(totalPages);
+          createPaginateList(totalPages);
         }
 
         if (contentType && contentType.includes('application/json')) {
@@ -79,8 +92,12 @@
       });
   }
 
-  function paginate(pages) {
-    paginateElemt.innerHTML = '';
+  /**
+  * create the list with categories related to the porfolio post
+  * @param {string} pages a url to fetch data fromst
+  */
+  function createPaginateList(pages) {
+    paginateElem.innerHTML = '';
     let fragment = document.createDocumentFragment();
 
     for (let i = 1; i < +pages + 1; i++) {
@@ -89,41 +106,42 @@
       li.dataset.pagenr = i;
       fragment.appendChild(li);
     }
-    paginateElemt.appendChild(fragment);
+    paginateElem.appendChild(fragment);
   }
-
-  getData(apiCategoryUrl, categoriesList);
-  getData(apiUrl, createList, true);
 
   // Click event for the categories 
   categoryElem.addEventListener("click", function (event) {
     if (event.target.tagName !== "LI") return;
-    catId = event.target.dataset.catid;
-    if (+catId === 0) {
-      getData(apiUrl, createList, true);
-    } else {
-      let postUrlCat = `http://www.velourfilm.se/wp/wp-json/wp/v2/portfolio/?portfolio_category=${catId}&per_page=12&page=1`;
-      getData(postUrlCat, createList, true);
-    }
+    if (event.target.dataset.catid === catId) return; // Prevent to make a request if the same category is trigger
 
+    catId = event.target.dataset.catid;
+    page = 1;
+    if (+catId === 0) {
+      getData(apiUrl, createList, true); // get all the posts
+    } else {
+      let postUrlCat = `${wpApiUrl}/${wpPostType}/?portfolio_category=${catId}&per_page=12&page=1`;
+      getData(postUrlCat, createList, true); // get posts with chosen category
+    }
   });
 
   // Click event for the pagination list 
-  paginateElemt.addEventListener("click", function (event) {
+  paginateElem.addEventListener("click", function (event) {
     if (event.target.tagName !== "LI") return;
-    let page = event.target.dataset.pagenr;
+    if (event.target.dataset.pagenr === page) return; // Prevent to make a request if is is the same page nr 
+    console.log(event.target.dataset.pagenr, page)
+    page = event.target.dataset.pagenr;
     if (+catId === 0) {
-      let apiUrl = `http://www.velourfilm.se/wp/wp-json/wp/v2/${wpPostType}/?per_page=${pages}&page=${page}`;
+      let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${pages}&page=${page}`;
       getData(apiUrl, createList, true);
     } else {
-      let postUrlCat = `http://www.velourfilm.se/wp/wp-json/wp/v2/portfolio/?portfolio_category=${catId}&per_page=12&page=${page}`;
+      let postUrlCat = `${wpApiUrl}/${wpPostType}/?portfolio_category=${catId}&per_page=12&page=${page}`;
       getData(postUrlCat, createList, true);
     }
-
     window.scroll(0, 0);
-
   });
 
-
+  // init page
+  getData(apiCategoryUrl, categoriesList);
+  getData(apiUrl, createList, true);
 
 })();
