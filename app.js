@@ -5,7 +5,7 @@
 
   const category = "portfolio_category";
   const wpPostType = "portfolio";
-  const pages = 12;
+  const posts = 12;
   let catId = 0;
   let page = 1;
 
@@ -14,7 +14,7 @@
   const paginateElem = document.querySelector("#wp-post-pagination");
 
   let apiCategoryUrl = `${wpApiUrl}/${category}`;
-  let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${pages}&page=1`;
+  let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${posts}&page=1`;
 
   /**
    * create the list with posts
@@ -22,12 +22,12 @@
    */
   function createList(posts) {
     postElem.innerHTML = '';
-    var fragment = document.createDocumentFragment();
+    let fragment = document.createDocumentFragment();
 
     posts.forEach(function (post) {
 
       let image = post.better_featured_image.source_url;
-      var li = document.createElement("li");
+      let li = document.createElement("li");
       li.style.cssText = `background: url(${image}) 50% 0%`;
       li.innerHTML = `
         <div>
@@ -141,10 +141,10 @@
     if (event.target.dataset.pagenr === page) return; // Prevent to make a request if is is the same page nr 
     page = event.target.dataset.pagenr;
     if (+catId === 0) {
-      let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${pages}&page=${page}`;
+      let apiUrl = `${wpApiUrl}/${wpPostType}/?per_page=${posts}&page=${page}`;
       getData(apiUrl, createList, true);
     } else {
-      let postUrlCat = `${wpApiUrl}/${wpPostType}/?portfolio_category=${catId}&per_page=12&page=${page}`;
+      let postUrlCat = `${wpApiUrl}/${wpPostType}/?portfolio_category=${catId}&per_page=${posts}&page=${page}`;
       getData(postUrlCat, createList, true);
     }
     scrollToTop();
